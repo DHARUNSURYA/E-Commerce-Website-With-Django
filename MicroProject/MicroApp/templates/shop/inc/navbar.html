@@ -1,0 +1,54 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+
+      <a class="navbar-brand" href="{% url 'home'%}">    <i class="fas fa-shopping-cart"></i>
+        MicroShop</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'home'%}">    <i class="fas fa-home"></i>
+              Home</a>
+          </li> </ul>
+        <ul class="navbar-nav navbar-right ">
+
+{%if request.user.is_authenticated%}
+<li class="nav-item active">
+  <a class="nav-link active " aria-current="page" href="#"><i class="fas fa-sign-in-alt fa-lg"></i>
+    {{request.user}}</a>
+</li>
+<li class="nav-item active">
+  <a class="nav-link active " aria-current="page" href="{%url 'logout'%}"><i class="fas fa-sign-in-alt fa-lg"></i>
+    Logout</a>
+</li>
+
+{%else %}
+<li class="nav-item active">
+  <a class="nav-link active " aria-current="page" href="{%url 'login'%}"><i class="fas fa-sign-in-alt fa-lg"></i>
+    Login</a>
+</li>
+<li class="nav-item active">
+  <a class="nav-link active" href="{% url 'reg'%}"><i class="fas fa-user-plus fa-lg"></i>
+    Register</a>
+</li> 
+{%endif%}
+
+          <li class="nav-item active">
+            <a class="nav-link active" aria-current="page"  href="{% url 'collection'%}"><i class="fas fa-star fa-lg"></i>
+              Collection </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link active" aria-current="page"  href="{% url 'cart'%}"><i class="fas fa-shopping-cart"></i> Cart </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link active" aria-current="page"  href="{% url 'favviewpage'%}"><i class="fas fa-heart"></i> 
+            favourite </a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </nav>

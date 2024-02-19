@@ -1,0 +1,74 @@
+{%extends 'shop/layoouts/main.html'%}
+{%block title%}
+Collection
+{%endblock title%}
+{% block css%}
+<style>
+    .colldiv{
+        margin-top: 50px;
+        text-align: center;
+    }
+    .colldiv a{
+        text-decoration: none;
+        color: white;
+        padding: 4px;
+        
+    }
+    .green{
+        background-color: blue;
+    }
+    .mar{
+        margin-left: 2px;
+        background-color: gray;
+    }
+.aa{
+    background-color: thistle;
+}
+  .ten a{
+        text-decoration: none;
+    }
+    .ten{
+        text-align: center;
+        text-decoration: none;
+    }
+</style>
+{% endblock css%}
+{%block content%}
+<div class="container" style="margin-top:100px">
+    <div class="colldiv">
+        <h1>Bestselling</h1>
+        <p>Oru Most Popular Selling Product</p>
+        <a href="" class="green">Already User</a>
+        <a href="" class="mar">Register</a>
+    </div>
+
+</div>
+<section class=" py-4 my-5 aa" >
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-1">Categories</h4>
+                <hr style="border-color: rgb(37, 37, 7);">
+                {%include 'shop/inc/message.html'%}
+
+            </div>
+
+            {%for item in catagory%}
+            <div class="col-md-4 col-lg-3">
+                <div class="card my-3">
+                    <img src="{{item.image.url}}" class="card immge-card" alt="Categories">
+                    <a href="{% url 'collection' item.name%}" class="ten">     
+                                                     <div class="card-body">
+                        
+                        <h5 class="card-title text-primary">{{item.name}}</h5>
+                        <p class="card-text">{{item.description}}</p>
+
+                    </div></a>
+                </div>
+
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</section>
+{%endblock content%}

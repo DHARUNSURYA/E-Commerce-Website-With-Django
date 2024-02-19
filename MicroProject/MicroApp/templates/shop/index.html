@@ -1,0 +1,68 @@
+{%extends 'shop/layoouts/main.html'%}
+{% load static %}
+
+{%block title%}
+MicroShop | Shoping
+{%endblock title%}
+{% block css%}
+<style>
+    .new{
+        font-weight: bold;
+        background-color: rgb(6, 250, 169);
+        color: white;
+        padding: 1%;
+        border-radius: 8px;
+    }
+    .old{
+        font-weight: bold;
+        color: orangered;
+    }
+    .ten h5{
+        text-align: center;
+    }
+    .aa{
+        background-color: thistle;
+    }
+    a{
+        text-decoration: none;
+    }
+</style>
+{% endblock css%}
+{%block content%}
+{% include 'shop/inc/sliderr.html'%}
+
+<div class="container" >
+   
+    <section class="py-4 my-5 aa">
+        <div class="container">
+            <div class="row">
+            <div class="col-12">
+                <h3 class="mb-3">Latest Offers</h3>
+                <hr style="border-color:white;">
+            </div>
+            {%for item in product%}
+            <div class="col-md-4 col-lg-3">
+                <div class="card my-3">
+                    <img src="{{item.product_image.url}}" class="card immge-card" alt="Categories">
+                    <a href="{%url 'product_details'  item.category.name item.name%}" class="ten"> 
+
+                         <div class="card-body">
+                        <h5 class="card-title text-primary">{{item.name}}</h5>
+                        <p class="card-text"><span class="float-start old"><s>Rs.{{item.original_price|stringformat:'d'}}/-</s></span>
+                            <span class="float-end new">Rs.{{item.selling_price|stringformat:'d'}}/-</span></p>
+                        
+        
+        
+                    </div></a>
+                </div>
+        
+            </div>
+            {%endfor%}
+            </div>
+        </div>
+        </section>
+
+</div>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+{% endblock content%}

@@ -1,0 +1,208 @@
+{%extends 'shop/layoouts/main.html'%}
+
+{%block title%}
+MicroShop | Mobiles
+{%endblock title%}
+{%block css%}
+<style>
+    .new{
+        font-weight: bold;
+        background-color: rgb(6, 250, 169);
+        color: white;
+        padding: 1%;
+        border-radius: 8px;
+    }
+    .old{
+        font-weight: bold;
+        color: orangered;
+    }
+    .ten h5{
+        text-align: center;
+    }
+    .aa{
+        background-color: thistle;
+    }
+    a{
+        text-decoration: none;
+    }
+
+    img{
+        height: 514px;
+        width: 380px;
+    }
+    .pic-box{
+        position: relative;
+
+    }
+    .hot{
+        background-color: red;
+        color: white;
+        font-weight: bold;
+        display: inline;
+        border-radius: 5px;
+        position: absolute;
+        top: 0;
+        margin-left: 72%;
+        z-index: 10;
+        margin-top: 2%;
+    }
+    .red{
+        color: red;
+    }
+    .green{
+        color: green;
+    }
+
+  
+   
+    
+</style>
+{% endblock css%}
+{%block content%}
+<section class="py-4 my-5 aa">
+<div class="container">
+    <div class="row">
+    <div class="col-12">
+        <h4 class="mb-3">
+            {{product}}
+        </h4>
+        <hr style="border-color:white;">
+    </div>
+ 
+</div>
+<div class="row">
+    <div class="col-5 my-3 pic-box">
+        {%if product.trending%}
+        <div class="hot">HOT</div>
+        {%endif%}
+        <img src="{{product.product_image.url}}" class="card immge-card call" alt="{{product}}">
+    </div>
+    <div class="col-7 my-4">
+        <h5 class="text-success">{{product | upper}}</h5>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'home'%}">Home</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'collection' product.category.name %}">Collection</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{product | upper}}</li>
+            </ol>
+          </nav>
+          {%include 'shop/inc/message.html'%}
+
+       <b> <p>{{product.vendor}}</p></b>
+        <p>{{product.description}}</p>
+        <h6 class="my-2 red">Current Price : Rs.<s>{{product.original_price}}</s></h6>
+        <h5 class="my-2 green">Offer Price : Rs.{{product.selling_price}}</h5>
+        {%if product.quentity > 0%}
+        <input type="hidden" value="{{product.id}}" id="pid">
+        <p>
+            <div class="input-group" style="width:150px">
+                <button class="input-group-text bg-success text-light" id="btnMinus" ><i class="fas fa-minus"></i></button>
+                  <input type="text" name="qty" id="txtQty" value="1" class="form-control text-center">
+                <button class="input-group-text bg-success text-light" id="btnPlus"><i class="fas fa-plus"></i></button>
+              </div>
+        </p>
+        <button class="btn btn-primary" id="btnCart" ><i class="fas fa-shopping-cart"></i>Add Card</button>
+        {%else%}
+        <button class="btn btn-secoundey"><i class="fas fa-shopping-minus"></i>Out Of Stok</button>
+        {%endif%}
+        <button class="btn btn-danger " id="btnFav"><i class="fas fa-heart"></i></button>
+
+    </div>
+</div>
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      const btnPlus = document.getElementById("btnPlus");
+      const btnMinus = document.getElementById("btnMinus");
+      const txtQty = document.getElementById("txtQty");
+      const pid = document.getElementById("pid");
+      const btnCart = document.getElementById("btnCart");
+      const btnFav= document.getElementById("btnFav");
+
+      
+
+    
+      btnPlus.addEventListener("click", function() {
+        let qty=parseInt(txtQty.value,10);
+        qty=isNaN(qty)?0:qty;
+        //console.log(qty);
+        if(qty<10){
+          qty++;
+          txtQty.value=qty;
+        }
+      });
+    
+      btnMinus.addEventListener("click", function() {
+          let qty=parseInt(txtQty.value,10);
+          qty=isNaN(qty)?0:qty;
+          //console.log(qty);
+          if(qty>1){
+            qty--;
+            txtQty.value=qty;
+          }
+      });
+    
+      btnCart.addEventListener("click", function() {
+          let qty=parseInt(txtQty.value,10);
+          qty=isNaN(qty)?0:qty;
+          
+          if(qty>0){
+            let postObj = { 
+                'product_qty': qty, 
+                'pid': pid.value,
+            }
+            //console.log(postObj);
+            fetch("/addtocart",{
+                method: 'POST',
+              credentials: 'same-origin',
+              headers:{
+                  'Accept': 'application/json',
+                  'X-Requested-With': 'XMLHttpRequest',
+                  'X-CSRFToken': '{{ csrf_token }}',
+              },
+              body: JSON.stringify(postObj)
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                //console.log(data);
+                alert(data['status'])
+            });
+     
+    
+          }else{
+            alert("Please Enter The Quantity");
+          }
+          
+      }); 
+    });
+
+
+    btnFav.addEventListener("click", function() {
+        
+          let postObj = { 
+              'pid': pid.value,
+          }
+          //console.log(postObj);
+          fetch("/fav",{
+              method: 'POST',
+            credentials: 'same-origin',
+            headers:{
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify(postObj)
+          }).then(response => {
+              return response.json();
+          }).then(data => {
+              //console.log(data);
+              alert(data['status'])
+          });
+   
+  
+        
+        
+    }); 
+  
+     </script>
+{% endblock content%}
